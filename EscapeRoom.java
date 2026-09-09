@@ -14,29 +14,18 @@ import java.util.Scanner;
  */
 public class EscapeRoom
 {
-
-      // describe the game with brief welcome message
-      // determine the size (length and width) a player must move to stay within the grid markings
-      // Allow game commands:
-      //    right, left, up, down: if you try to go off grid or bump into wall, score decreases
-      //    jump over 1 space: you cannot jump over walls
-      //    if you land on a trap, spring a trap to increase score: you must first check if there is a trap, if none exists, penalty
-      //    pick up prize: score increases, if there is no prize, penalty
-      //    help: display all possible commands
-      //    end: reach the far right wall, score increase, game ends, if game ended without reaching far right wall, penalty
-      //    replay: shows number of player steps and resets the board, you or another player can play the same board
-      // Note that you must adjust the score with any method that returns a score
-      // Optional: create a custom image for your player use the file player.png on disk
-    
-      /**** provided code:
-      // set up the game
-      boolean play = true;
-      while (play)
-      {
-        // get user input and call game methods to play 
-        play = false;
-      }
-      */
+  /* TO-DO: Process game commands from user input:
+      right, left, up, down: move player size of move, m, if player try to go off grid or bump into wall, score decreases
+      jump over 1 space: player cannot jump over walls
+      pick up prize: score increases, if there is no prize, penalty
+      help: display all possible commands
+      end: reach the far right wall, score increase, game ends, if game ends without reaching far right wall, penalty
+      replay: shows number of player steps and resets the board, player or another player can play the same board
+        
+      if player land on a trap, spring a trap to increase score: the program must first check if there is a trap, if none exists, penalty
+      Note that you must adjust the score with any method that returns a score
+      Optional: create a custom image for player - use the file player.png on disk
+    */
 
   public static void main(String[] args) 
   {      
@@ -65,13 +54,87 @@ public class EscapeRoom
     boolean play = true;
     while (play)
     {
-      /* TODO: get all the commands working */
-	  /* Your code here */
-    
-      
-    }
 
-  
+      // get user command and validate
+      System.out.print("Enter command:");
+      String input = UserInput.getValidInput(validCommands);
+
+      /* process user commands*/
+      
+      if (input.equals("right")){
+        game.movePlayer(60, 0);
+        score -= 1;
+        System.out.println("Score:" + score);
+      }
+      else if (input.equals("left")){
+        game.movePlayer(-60, 0);
+        score -= 1;
+        System.out.println("Score:" + score);
+      }
+      else if (input.equals("up")){
+        game.movePlayer(0, -60);
+        score -= 1;
+        System.out.println("Score:" + score);
+      }
+      else if (input.equals("down")){
+        game.movePlayer(0, 60);
+        score -= 1;
+        System.out.println("Score:" + score);
+      }
+      else if (input.equals("jumpleft")){
+        game.movePlayer(-120, 0);
+        score -= 1;
+        System.out.println("Score:" + score);
+      }
+      else if (input.equals("jumpup")){
+        game.movePlayer(0, -120);
+        score -= 1;
+        System.out.println("Score:" + score);
+      }
+      else if (input.equals("jumpdown")){
+        game.movePlayer(0, 120);
+        score -= 1;
+        System.out.println("Score:" + score);
+      }
+      else if (input.equals("jump")){
+        game.movePlayer(120, 0);
+        score -= 1;
+        System.out.println("Score:" + score);
+      }
+      else if (input.equals("help")){
+        System.out.println("Help menu:");
+        System.out.println("right: move the player 1 square right");
+        System.out.println("left: move the player 1 square left");
+        System.out.println("up: move the player 1 square up");
+        System.out.println("down: move the player 1 square down");
+        System.out.println("jump: jump the player 2 squares right");
+        System.out.println("jumpleft: jump the player 2 squares left");
+        System.out.println("jumpup: jumps the player 2 squares up");
+        System.out.println("jumpdown: jump the player 2 squares down");
+        System.out.println("quit: quit the game");
+        System.out.println("replay: restart the game");
+        System.out.println("pickup: pickup the prize"); 
+      }
+      else if (input.equals("pickup")){
+        game.pickupPrize();
+        score += 10;
+        System.out.println("Score:" + score);
+      }
+      else if (input.equals("replay")){
+        game.replay();
+        score -= 2;
+        System.out.println("Score:" + score);
+      }
+      else if (input.equals("quit")){
+        /* uncomment when user quits */
+        play = false;
+      }
+      else{
+        System.out.println("Invalid command, try again.");
+        score -= 3;
+        System.out.println("Score:" + score);
+      }
+    }
 
     score += game.endGame();
 
@@ -79,5 +142,3 @@ public class EscapeRoom
     System.out.println("steps=" + game.getSteps());
   }
 }
-
-        
