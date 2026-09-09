@@ -1,10 +1,3 @@
-/*
-* Problem 1: Escape Room
-* 
-* V1.0
-* 10/10/2019
-* Copyright(c) 2019 PLTW to present. All rights reserved
-*/
 import java.util.Scanner;
 
 /**
@@ -44,6 +37,9 @@ public class EscapeRoom
     int py = 0; 
     
     int score = 0;
+    int totalCoins = 3;
+    int collectedCoins = 0;
+    boolean wonByCoins = false;
 
     Scanner in = new Scanner(System.in);
     String[] validCommands = { "right", "left", "up", "down", "r", "l", "u", "d",
@@ -116,9 +112,18 @@ public class EscapeRoom
         System.out.println("pickup: pickup the prize"); 
       }
       else if (input.equals("pickup")){
-        game.pickupPrize();
-        score += 10;
+        int pickupScore = game.pickupPrize();
+        if (pickupScore > 0) {
+          collectedCoins++;
+        }
+        score += pickupScore;
         System.out.println("Score:" + score);
+
+        if (collectedCoins >= totalCoins) {
+          wonByCoins = true;
+          System.out.println("You collected all the coins! You win!");
+          play = false;
+        }
       }
       else if (input.equals("replay")){
         game.replay();
@@ -134,11 +139,55 @@ public class EscapeRoom
         score -= 3;
         System.out.println("Score:" + score);
       }
+
+      if (game.isTrap(0, 0)) {
+        score -= 5;
+        System.out.println("You stepped on a trap! You lose 5 points.");
+        System.out.println("Score:" + score);
+      }
+
+      if (game.isTrap(60, 0) || game.isTrap(-60, 0) || game.isTrap(0, 60) || game.isTrap(0, -60)) {
+        int trapX = 0;
+        int trapY = 0;
+
+        if (game.isTrap(60, 0)) {
+          trapX = 60;
+          trapY = 0;
+        }
+        else if (game.isTrap(-60, 0)) {
+          trapX = -60;
+          trapY = 0;
+        }
+        else if (game.isTrap(0, 60)) {
+          trapX = 0;
+          trapY = 60;
+        }
+        else if (game.isTrap(0, -60)) {
+          trapX = 0;
+          trapY = -60;
+        }
+
+        System.out.print("There's a trap nearby! Do you want to spring it? (yes/no): ");
+        String springTrap = UserInput.getValidInput(new String[]{"yes", "no"});
+        if (springTrap.equals("yes")) {
+          score += game.springTrap(trapX, trapY);
+          System.out.println("Score:" + score);
+        }
+      }
     }
 
-    score += game.endGame();
+    if (!wonByCoins) {
+      score += game.endGame();
+      System.out.println("You won");
+      System.out.println("Score:" + score);
+    }
 
     System.out.println("score=" + score);
     System.out.println("steps=" + game.getSteps());
-  }
+  }  
 }
+
+
+  
+
+        
