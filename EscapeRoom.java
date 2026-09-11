@@ -179,11 +179,10 @@ public class EscapeRoom
     if (!wonByCoins) {
       score += game.endGame();
       System.out.println("You won");
+      System.out.println("steps=" + game.getSteps());
       System.out.println("Score:" + score);
     }
 
-    System.out.println("score=" + score);
-    System.out.println("steps=" + game.getSteps());
   }  
 }
 
