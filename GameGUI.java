@@ -13,13 +13,17 @@ import javax.imageio.ImageIO;
 
 import java.util.Random;
 
+import javax.swing.JFrame;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 /**
  * A Game board on which to place and move players.
  * 
  * @author PLTW
  * @version 1.0
  */
-public class GameGUI extends JComponent
+public class GameGUI extends JComponent implements KeyListener
 {
   static final long serialVersionUID = 141L; // problem 1.4.1
 
@@ -97,12 +101,38 @@ public class GameGUI extends JComponent
     frame.add(this);
     frame.setVisible(true);
     frame.setResizable(false); 
+    frame.addKeyListener(this);
 
     // set default config
     totalWalls = 20;
     totalPrizes = 3;
     totalTraps = 5;
   }
+  @Override
+    public void keyPressed(KeyEvent e){
+      int keyCode = e.getKeyCode();
+      switch (keyCode) {
+          case KeyEvent.VK_W:
+            movePlayer(0, -60);
+            break;
+          case KeyEvent.VK_A:
+            movePlayer(-60, 0);
+            break;
+          case KeyEvent.VK_S:
+            movePlayer(0, 60);
+            break;      
+          case KeyEvent.VK_D:
+            movePlayer(60, 0);
+            break;
+        }
+    }
+    @Override
+    public void keyReleased(KeyEvent e){
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e){
+    }
 
  /**
   * After a GameGUI object is created, this method adds the walls, prizes, and traps to the gameboard.
